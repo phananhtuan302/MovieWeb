@@ -1,0 +1,675 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.web-now {
+    color: #0d6efd !important;
+    /* border-right: 4px solid #0d6efd; */
+}
+
+.flex {
+    display: flex;
+}
+
+.gap-6 {
+    gap: 1.5rem;
+}
+
+.items_start {
+    height: 100vh;
+    width: 71px;
+    background-color: rgba(28, 28, 30);
+    position: fixed;
+    left: 0px;
+    display: flex;
+    padding: 20px 0px 30px 0px !important;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.text-white {
+    color: #ffffff;
+}
+
+.text-size {
+    font-size: 1.125rem;
+    font-height: 1.75rem;
+}
+
+.font-medium {
+    font-weight: 500;
+}
+
+.it_st-logo {
+    padding-bottom: 20px;
+    font-size: 43px;
+    display: flex;
+}
+
+.it_st-logo>.fa-regular {
+    font-size: 40px;
+    color: aliceblue;
+    padding: 20px;
+    /* margin-bottom: 160px; */
+}
+
+.it_st_items {
+    /* padding-top: 0px; */
+}
+
+.it_st_items>div {
+    padding: 20px;
+    margin: 0px;
+    font-size: 20px;
+}
+
+.it_st_items>div>a {
+    text-decoration: none;
+    color: rgb(152 152 152);
+    align-items: center;
+    transition: color 0.5s ease;
+}
+
+.it_st_items>div>a:hover {
+    color: aliceblue;
+}
+
+.item_menu_start {
+    margin-left: 20px;
+}
+
+.it_st-menu {}
+
+.center_web {
+    width: calc(100% - 369px);
+    position: relative;
+    left: 70px;
+    /* padding: 28px; */
+    background-color: rgba(28, 28, 30);
+    min-height: 100vh;
+    /* border: 1px solid rgb(58, 57, 57); */
+    border-top: 0px;
+    border-bottom: 0px;
+    height: max-content;
+}
+
+.cw-background-movie {
+    height: 400px;
+    background-image: url('../../img/movie/ecnkqs4owvkmptjfml2cwyhlvol.jpg');
+    background-position: 50%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    border-radius: 15px;
+    /* background-color: rgba(28, 28, 30); */
+}
+
+.cw-background-movie::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(28, 28, 30, 0.3);
+    /* Thay đổi màu và độ trong suốt tại đây */
+}
+
+.cw-background-movie img {
+    width: 185px;
+    object-fit: cover;
+    /* Giữ tỉ lệ ảnh và cắt phần không cần thiết */
+    /* object-position: center; */
+    /* Tập trung vào phần giữa của ảnh */
+    border-radius: 15px;
+}
+
+.cw-background-body {
+    position: absolute;
+    top: 170px;
+    left: 90px;
+    display: flex;
+    width: 90%;
+    align-items: center;
+}
+
+.cw-background-information {
+    padding-left: 50px;
+    flex-grow: 1;
+}
+
+.cw-background-title {
+    font-size: 40px;
+    color: #ffffff;
+    font-weight: 750;
+}
+
+.cw-background-category {
+    display: flex;
+    gap: 15px;
+    padding-top: 10px;
+}
+
+.cw-category {
+    color: #ffffff;
+    padding: 4px 12px;
+    border: 1px solid #ffffff;
+    border-radius: 30px;
+    font-weight: 600;
+}
+
+.cw-watch {
+    font-size: 20px;
+    color: #ffffff;
+    /* margin-left: 40%; */
+    padding: 10px 60px;
+    background-color: #0d6efd;
+    border-radius: 50px;
+    text-decoration: none;
+}
+
+.cw-action-icon {
+    position: absolute;
+    right: 30px;
+    top: 8px;
+    font-size: 17px;
+    color: #ffffff;
+}
+
+.cw-action-icon a i {
+    color: #ffffff;
+    margin: 5px;
+    padding: 9px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    transition: 0.5s ease;
+}
+
+.cw-action-icon a i:hover {
+    color: #0d6efd;
+    border: 2px solid #0d6efd;
+}
+
+.cw-body {
+    display: flex;
+    flex-direction: row;
+}
+
+.cw-body-left {
+    display: flex;
+    width: 10%;
+    justify-content: center;
+    padding: 120px 0px;
+    height: 280px;
+    box-sizing: initial;
+    margin: 60px 0px;
+    border-right: 1px solid #515151;
+    flex-direction: column;
+    align-items: center;
+}
+
+.circular-progress {
+    margin-bottom: 60px;
+}
+
+.ep-length-lates {
+    font-size: 16px;
+    color: beige;
+}
+
+.cw-body-center {
+    color: white;
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cw-body-center-nav {
+    display: flex;
+    height: fit-content;
+}
+
+.cw-body-center-nav-item {
+    font-size: 17px;
+    color: white;
+    padding: 14px;
+    cursor: pointer;
+    position: relative;
+}
+
+.cw-body-center-nav-item.active,
+.cw-body-center-nav-item.active {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    font-size: 17px !important;
+}
+
+.nav-item1.active:after,
+.nav-item2.active:after,
+.nav-item3.active:after,
+.nav-item4.active:after {
+    position: absolute;
+    content: "";
+    width: 20px;
+    background: #ffffff;
+    height: 3px;
+    left: 30px;
+    bottom: 0px;
+}
+
+.nav-item2.active:after {
+    left: 20px !important;
+}
+
+.cw-body-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 50px;
+}
+
+.cwb-content-title {
+    font-size: 21px;
+    font-style: italic;
+    font-family: cursive;
+}
+
+.cw-body-content-main-seriesstory {
+    font-size: 19px;
+    font-weight: 600;
+}
+
+.story_content.cw-body-content-main-item {
+    font-size: 15px;
+    padding: 25px;
+    opacity: 0.7;
+}
+
+.content-overall,
+.content-cast,
+.content-reviews,
+.content-seasons {
+    display: none;
+}
+
+.content_appear {
+    display: flex !important;
+}
+
+.cw-body-right {
+    color: white;
+    width: 20%;
+    display: flex;
+    padding: 20px;
+    border-left: 1px solid #515151;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cw-body-right-title {
+    font-weight: 600;
+    padding-bottom: 25px;
+}
+
+.cast-item img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.cast-item-text {
+    padding-left: 12px;
+}
+
+.cast-item-text1 {
+    color: #0d6efd;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.content-cast-items {
+    width: 100%;
+    display: grid;
+    height: 100%;
+    grid-template-columns: 50% 50%;
+    justify-items: center;
+}
+
+.cast-item {
+    display: flex;
+    flex-direction: row;
+    height: fit-content;
+    width: fit-content;
+}
+
+.cw-body-content.content-cast.content_appear {
+    width: 100%;
+    height: 100%;
+}
+
+.content-reviews {
+    width: 100%;
+    height: 100%;
+    align-items: flex-end;
+    padding: 10px 50px !important;
+}
+
+.content_soft_rating {
+    display: flex;
+    align-items: baseline;
+    color: navajowhite;
+}
+
+.content_soft_rating select {
+    margin-left: 10px;
+    background-color: rgba(28, 28, 30);
+    border: 0px;
+    color: navajowhite;
+}
+
+.review_item img {
+    width: 150px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+ul.review_list {
+    list-style-type: none;
+    /* display: flex; */
+    overflow-y: auto;
+    max-height: 440px;
+    padding-right: 20px;
+}
+
+.review_list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.review_list::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #515151;
+}
+
+.review_list::-webkit-scrollbar-track {
+    background-color: #2b2b2b;
+}
+
+li.review_item {
+    display: flex;
+    padding-bottom: 15px;
+}
+
+.review_item_text {
+    padding-left: 20px;
+}
+
+.header_review_item {
+    display: flex;
+    justify-content: space-between;
+}
+
+.content_review_item {
+    opacity: 0.7;
+}
+
+.years_review_item {
+    display: flex;
+    justify-content: flex-end;
+    opacity: 0.7;
+}
+
+.content-seasons {
+    width: 100%;
+    height: 100%;
+}
+
+.header_content_season {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.header_content_season p {
+    opacity: 0.7;
+}
+
+.content_season_item img {
+    width: 120px;
+    height: 180px;
+    border-radius: 10px;
+}
+
+ul.content_season_list {
+    padding-top: 30px;
+    list-style-type: none;
+}
+
+li.content_season_item {
+    display: flex;
+}
+
+.content_season_item_text {
+    padding-left: 20px;
+}
+
+.content_season_item_header {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 10px;
+}
+
+.season_header_left {
+    opacity: 1 !important;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.season_header_right {
+    opacity: 0.7;
+    font-size: 18px;
+}
+
+.content_season_content {
+    opacity: 0.7;
+    padding-bottom: 10px;
+    max-height: 50px;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.season_content_expanded {
+    max-height: 500px !important;
+}
+
+.toggle-button {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.toggle-button:hover {
+    opacity: 1;
+}
+
+.content_season_years {
+    opacity: 0.7;
+}
+
+
+/*----------------------------------------------------------------------------*/
+
+.right_wed {
+    top: 0px;
+    height: 100vh;
+    width: 301px;
+    background-color: rgba(28, 28, 30);
+    position: fixed;
+    right: 0px;
+    /* padding: 40px 0px 0px 32px; */
+    display: flex;
+    padding: 30px 20px;
+    flex-direction: column;
+}
+
+.rw-search {
+    position: relative;
+    padding-bottom: 20px;
+}
+
+.rw-search-button {
+    position: absolute;
+    top: 8px;
+    left: 15px;
+    font-size: 20px;
+    color: #8a939d;
+    border: 0px;
+    background-color: #515151;
+    transition: color 0.5s ease;
+}
+
+.rw-search-button:hover {
+    color: aliceblue;
+}
+
+.rw-search-input {
+    padding: 12px 20px 12px 56px;
+    border-radius: 50px;
+    background-color: #515151;
+    color: #ffffff;
+    border: 0px;
+}
+
+.rw-search-input::placeholder {
+    color: rgb(152 152 152);
+}
+
+.rw-similar {
+    display: flex;
+    justify-content: space-between;
+}
+
+.rw-similar-list {
+    padding: 30px 0px 0px 0px;
+}
+
+.rw-similar-title {
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.fa-ellipsis-vertical {
+    color: #fafafa;
+    padding-top: 6px;
+    font-size: 19px;
+}
+
+.similar-item {
+    padding: 0px 0px 20px 0px;
+    display: flex;
+    flex-direction: row;
+}
+
+.img-similar-item {
+    border-radius: 10px;
+    width: 100px;
+}
+
+.introduce-similar-item {
+    display: flex;
+    flex-direction: column;
+    /* color: #ffffff; */
+    justify-content: center;
+}
+
+.title-similar-item {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 0px 0px 8px 20px;
+}
+
+.day-similar-item {
+    padding: 0px 20px;
+    color: rgba(152 152 152);
+    font-size: 15px;
+}
+
+.rates-similar-item {
+    border: 1px solid #0d6efd;
+    width: fit-content;
+    padding: 2px 15px;
+    border-radius: 30px;
+    margin: 20px;
+    color: #0d6efd;
+    font-size: 15px;
+}
+
+.more-similar-list-button {
+    padding: 8px 10px;
+    background-color: #515151;
+    display: flex;
+    border-radius: 50px;
+    width: 220px;
+    text-decoration: none;
+    color: #d3d3d3;
+    transition: color 0.5s ease;
+    justify-content: center;
+    align-items: center;
+    border: 0px;
+    margin: 20px 26px;
+}
+
+.more-similar-list-button:hover {
+    background-color: #2b2b2b;
+}
+
+
+/* Google Fonts - Poppins */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+.circular-progress {
+    position: relative;
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    background: conic-gradient(#7d2ae8 3.6deg, #ededed 0deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circular-progress::before {
+    content: "";
+    position: absolute;
+    height: 70px;
+    width: 70px;
+    border-radius: 50%;
+    background-color: #fff;
+}
+
+.progress-value {
+    position: relative;
+    font-size: 25px;
+    font-weight: 600;
+    color: #7d2ae8;
+}
+
+.text {
+    font-size: 30px;
+    font-weight: 500;
+    color: #606060;
+}
+
+a.similar-item {
+    text-decoration: none;
+}
