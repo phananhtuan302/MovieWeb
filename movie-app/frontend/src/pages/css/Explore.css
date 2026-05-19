@@ -1,0 +1,401 @@
+    /* Explore page styles: movie grid as a horizontal list with ~7 items per row */
+    
+    .movies-grid {
+        display: grid;
+        /* create as many 180px columns as fit the container; will wrap automatically */
+        grid-template-columns: repeat(auto-fit, 180px);
+        gap: 12px;
+        align-items: start;
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .movie-card {
+        background: transparent;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .movie-card {
+        width: 180px;
+    }
+    
+    .movie-card img {
+        width: 180px;
+        height: auto;
+        border-radius: 6px;
+        display: block;
+    }
+    /* Rating badge overlay */
+    
+    .movie-card {
+        position: relative;
+    }
+    
+    .rating-badge {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        background: #0077b6;
+        /* blue color */
+        color: #ffffff;
+        padding: 6px 8px;
+        border-radius: 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    }
+    
+    .rating-badge .rating-star {
+        color: #ffd75a;
+        /* star color */
+        margin-left: 2px;
+    }
+    
+    .movie-card-info {
+        width: 100%;
+        margin-top: 6px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .movie-card-info .text-white {
+        margin: 0;
+        font-size: 0.95rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
+    .movie-card-info .text-primary {
+        color: #ffb400;
+        font-weight: 600;
+    }
+    /* Responsive adjustments */
+    /* auto-fit handles responsiveness; add a small breakpoint to ensure spacing on very small screens */
+    
+    @media (max-width: 420px) {
+        .movies-grid {
+            grid-template-columns: repeat(auto-fit, 140px);
+            gap: 8px;
+        }
+    }
+    /* Optional: style for genre chips and filter panel */
+    
+    .genre-chip {
+        background: rgba(255, 255, 255, 0.06);
+        color: #fff;
+        border: none;
+        padding: 6px 10px;
+        margin: 4px;
+        border-radius: 16px;
+        cursor: pointer;
+    }
+    
+    .genre-chip.active {
+        background: #0077b6;
+        color: #ffffff;
+        box-shadow: 0 4px 10px rgba(0, 119, 182, 0.25);
+        transform: translateY(-1px);
+    }
+    
+    .sort-panel {
+        padding: 12px;
+    }
+    
+    .right_wed {
+        width: 300px;
+        padding-left: 16px;
+    }
+    
+    .sort-panel {
+        background: linear-gradient(180deg, rgba(6, 10, 18, 0.95), rgba(10, 14, 22, 0.92));
+        border-radius: 12px;
+        padding: 18px;
+        position: sticky;
+        top: 16px;
+        box-shadow: 0 12px 30px rgba(2, 6, 14, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        color: #eaf4ff;
+    }
+    
+    .sort-panel h3 {
+        margin: 0 0 10px 0;
+        font-size: 1.05rem;
+    }
+    
+    .sort-panel .text-white {
+        color: #eaf4ff;
+    }
+    
+    .sort-group {
+        margin-bottom: 12px;
+    }
+    
+    .filter-select {
+        width: 100%;
+    }
+    
+    .filter-select {
+        padding: 6px 8px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.03);
+        color: #eaf4ff;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    /* Darker dropdown and options for better contrast */
+    
+    .filter-select {
+        background: linear-gradient(180deg, rgba(10, 14, 22, 0.9), rgba(6, 9, 14, 0.9));
+        color: #eaf4ff;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        -webkit-appearance: none;
+        appearance: none;
+    }
+    
+    .filter-select:focus {
+        box-shadow: 0 6px 18px rgba(3, 9, 20, 0.6);
+        outline: none;
+    }
+    
+    .filter-select option {
+        background: rgba(8, 12, 20, 0.98);
+        color: #eaf4ff;
+    }
+    /* For Windows/Chromium where options inherit default white, force via important */
+    
+    .filter-select option {
+        background: rgba(8, 12, 20, 0.98) !important;
+        color: #eaf4ff !important;
+    }
+    
+    .filter-bar {
+        padding: 0px 0px 30px 0px;
+    }
+    /* Right panel polish */
+    
+    .right_wed {
+        box-sizing: border-box;
+    }
+    
+    .sort-panel {
+        max-width: 320px;
+        padding: 18px;
+    }
+    /* Genres panel: vertical framed list with scroll */
+    
+    .genre-panel {
+        background: rgba(8, 12, 20, 0.65);
+        border-radius: 10px;
+        padding: 10px;
+        max-height: 320px;
+        overflow-y: auto;
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    }
+    
+    .genre-panel .genre-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        align-items: stretch;
+    }
+    /* Make chips full-width within the framed panel, keep their compact style elsewhere */
+    
+    .genre-panel .genre-chip {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 8px 10px;
+        margin: 0;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 8px;
+    }
+    
+    .genre-panel .genre-chip:hover {
+        transform: translateY(-1px);
+    }
+    
+    .genre-panel .genre-chip.active {
+        background: #0077b6;
+        color: #fff;
+        box-shadow: 0 8px 18px rgba(0, 119, 182, 0.18);
+    }
+    /* Custom scrollbar (WebKit) */
+    
+    .genre-panel::-webkit-scrollbar {
+        width: 10px;
+    }
+    
+    .genre-panel::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.06);
+        border-radius: 8px;
+    }
+    
+    .genre-panel::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    /* Firefox scrollbar color */
+    
+    .genre-panel {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.06) transparent;
+    }
+    
+    @media (max-width: 800px) {
+        .genre-panel {
+            max-height: 220px;
+        }
+    }
+    
+    .sort-panel .sort-label {
+        display: block;
+        margin-bottom: 6px;
+        color: #cfd8e3;
+        font-size: 0.95rem;
+    }
+    
+    .genre-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 6px;
+    }
+    
+    .genre-chip {
+        transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+        color: #eaf4ff;
+        background: rgba(255, 255, 255, 0.02);
+    }
+    
+    .genre-chip:hover {
+        transform: translateY(-2px);
+    }
+    
+    .genre-chip.active {
+        background: #0077b6;
+        color: #fff;
+        box-shadow: 0 8px 20px rgba(0, 119, 182, 0.22);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    
+    .runtime-range {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 8px;
+    }
+    
+    .runtime-input {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        flex: 1;
+    }
+    
+    .runtime-input input {
+        width: 100%;
+        padding: 8px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        color: #eaf4ff;
+    }
+    /* Range slider styles */
+    
+    input[type="range"] {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 8px;
+        background: linear-gradient(90deg, #0b5f8a, #0077b6);
+        border-radius: 999px;
+        outline: none;
+    }
+    
+    input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #ffffff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        border: 2px solid rgba(0, 119, 182, 0.9);
+    }
+    
+    input[type="range"]::-moz-range-thumb {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #fff;
+        border: 2px solid rgba(0, 119, 182, 0.9);
+    }
+    
+    .runtime-value {
+        color: #eaf4ff;
+        font-weight: 700;
+    }
+    
+    .release-dates {
+        display: flex;
+        gap: 8px;
+        flex-direction: column;
+        margin-top: 8px;
+    }
+    
+    .release-input {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+    
+    .release-input input {
+        padding: 8px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        color: #eaf4ff;
+        box-sizing: border-box;
+        width: auto;
+        min-width: 0;
+        max-width: 140px;
+        font-size: 0.95rem;
+    }
+    
+    .release-input input::placeholder {
+        color: rgba(234, 244, 255, 0.5);
+    }
+    
+    .release-input span {
+        color: #eaf4ff;
+        font-weight: 600;
+    }
+    /* tidy up unused apply styles (not used) */
+    
+    .apply-button,
+    .genre-chip.apply {
+        display: none !important;
+    }
+    /* Ensure panel doesn't overflow and hides on narrow screens */
+    
+    @media (max-width: 1100px) {
+        .right_wed {
+            display: none;
+        }
+    }
+    
+    @media (max-width: 520px) {
+        .release-input input {
+            max-width: 110px;
+            font-size: 0.9rem;
+        }
+        .runtime-value {
+            font-size: 0.95rem;
+        }
+    }

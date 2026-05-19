@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams, Link as RouterLink } from "react-router-dom";
-import { getMovieDetail, getMovieCredits, getMovieReviews, getSimilarMovies } from "../services/movieService";
+import { getMediaCredits, getMediaDetail, getMediaReviews, getSimilarMedia } from "../services/movieService";
 import "./css/MovieDetail.css";
 
 export default function MovieDetail() {
-  const { id } = useParams();
+  const { mediaType: routeMediaType, id } = useParams();
+  const mediaType = routeMediaType === "tv" ? "tv" : "movie";
   const movieId = id;
   const [movie, setMovie] = useState(null);
   const [cast, setCast] = useState([]);
@@ -15,41 +16,42 @@ export default function MovieDetail() {
 
   useEffect(() => {
     if (!movieId) return;
-    getMovieDetail(movieId)
+    getMediaDetail(mediaType, movieId)
       .then((data) => setMovie(data))
       .catch(() => setMovie(null));
-  }, [movieId]);
+  }, [mediaType, movieId]);
 
   useEffect(() => {
     if (!movieId) return;
-    getMovieCredits(movieId)
+    getMediaCredits(mediaType, movieId)
       .then((data) => {
         setCast(data.cast || []);
       })
       .catch(() => setCast([]));
-  }, [movieId]);
+  }, [mediaType, movieId]);
 
   useEffect(() => {
     if (!movieId) return;
-    getMovieReviews(movieId)
+    getMediaReviews(mediaType, movieId)
       .then((data) => {
         setReviews(data.results || []);
       })
       .catch(() => setReviews([]));
-  }, [movieId]);
+  }, [mediaType, movieId]);
 
   useEffect(() => {
     if (!movieId) return;
-    getSimilarMovies(movieId)
+    getSimilarMedia(mediaType, movieId)
       .then((data) => {
         setSimilarMovies(data.results || []);
       })
       .catch(() => setSimilarMovies([]));
-  }, [movieId]);
+  }, [mediaType, movieId]);
 
   if (!movie) return <div className="movie-detail">Loading...</div>;
 
   const rating = movie.vote_average ? movie.vote_average.toFixed(1) : "--";
+  const episodeLength = movie.runtime || movie.episode_run_time?.[0];
   const backdrop = movie.backdrop_path
     ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
     : undefined;
@@ -120,11 +122,11 @@ export default function MovieDetail() {
         <div className="cw-body">
           <div className="cw-body-left">
             <p className="cw-bl-rating text-size text-white font-medium">RATING</p>
-            <div className="circular-progress">
+            <div className="circular-progress" style={{ background: `conic-gradient(#7d2ae8 ${(parseFloat(rating) / 10) * 360}deg, #ededed 0deg)` }}>
               <span className="progress-value">{rating}</span>
             </div>
             <p className="cw-bl-length text-size text-white font-medium">EP LENGTH</p>
-            <div className="ep-length-lates">{movie.runtime ? `${movie.runtime} min` : "—"}</div>
+            <div className="ep-length-lates">{episodeLength ? `${episodeLength} min` : "—"}</div>
           </div>
 
           <div className="cw-body-center">
@@ -261,7 +263,7 @@ export default function MovieDetail() {
                 : poster;
 
               return (
-                <RouterLink key={item.id} className="similar-item" to={`/movie/${item.id}`}>
+                <RouterLink key={item.id} className="similar-item" to={`/${mediaType}/${item.id}`}>
                   {similarPoster && <img className="img-similar-item" src={similarPoster} alt={item.title || item.name || "similar movie"} />}
                   <div className="introduce-similar-item">
                     <div className="title-similar-item">{item.title || item.name}</div>

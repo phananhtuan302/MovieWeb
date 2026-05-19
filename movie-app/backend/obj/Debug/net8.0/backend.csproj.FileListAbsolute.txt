@@ -31,3 +31,4 @@ C:\Users\Phan Anh Tuan\Desktop\Webmovie\movie-app\backend\obj\Debug\net8.0\refin
 C:\Users\Phan Anh Tuan\Desktop\Webmovie\movie-app\backend\obj\Debug\net8.0\backend.pdb
 C:\Users\Phan Anh Tuan\Desktop\Webmovie\movie-app\backend\obj\Debug\net8.0\backend.genruntimeconfig.cache
 C:\Users\Phan Anh Tuan\Desktop\Webmovie\movie-app\backend\obj\Debug\net8.0\ref\backend.dll
+C:\Users\Phan Anh Tuan\Desktop\Webmovie\movie-app\backend\obj\Debug\net8.0\backend.sourcelink.json

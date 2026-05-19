@@ -9,7 +9,7 @@ export default function Home() {
 
   useEffect(() => {
     getPopularMovies(1)
-      .then((data) => setMovies(data.results))
+      .then((data) => setMovies(data?.results || []))
       .catch(() => setMovies([]));
   }, []);
 
@@ -29,8 +29,8 @@ export default function Home() {
               TV Show
             </div>
             <div
-              className={"movie_type-2 " + (selectedType === "movies" ? "active" : "")}
-              onClick={() => setSelectedType("movies")}
+              className={"movie_type-2 " + (selectedType === "movie" ? "active" : "")}
+              onClick={() => setSelectedType("movie")}
             >
               Movies
             </div>
@@ -48,7 +48,7 @@ export default function Home() {
               <div key={movie.id} className="movie-card">
                 <img
                   src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
-                  alt={movie.title}
+                  alt={movie.title || movie.name}
                 />
                 <div className="movie-card-info">
                   <p className="text-white">{movie.title || movie.name}</p>

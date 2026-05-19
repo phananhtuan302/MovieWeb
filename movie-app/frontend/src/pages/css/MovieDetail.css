@@ -642,7 +642,6 @@ li.content_season_item {
     height: 100px;
     width: 100px;
     border-radius: 50%;
-    background: conic-gradient(#7d2ae8 3.6deg, #ededed 0deg);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -672,4 +671,12 @@ li.content_season_item {
 
 a.similar-item {
     text-decoration: none;
+}
+
+.movie-card {
+    text-decoration: none;
+}
+
+.filter-select {
+    margin: 10px;
 }

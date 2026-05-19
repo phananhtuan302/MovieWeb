@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { getPopularMovies, getTopRatedMovies, getUpcomingMovies, getNowPlayingMovies, getGenres, getTrendingMovies } from "./services/movieService";
+import { getPopularMedia, getTopRatedMedia, getUpcomingMedia, getNowPlayingMedia, getGenresByMedia, getTrendingMedia } from "./services/movieService";
 import "./App.css";
+import "./pages/css/explore.css";
 import Sidebar from "./components/Sidebar";
 import { Link } from "react-router-dom";
 
@@ -13,48 +14,49 @@ import "swiper/css/pagination";
 
 function App() {
   const [selectedType, setSelectedType] = useState("tv");
+  const mediaType = selectedType === "tv" ? "tv" : "movie";
 
   const [movies, setMovies] = useState([]);
   useEffect(() => {
-    getPopularMovies(1).then((data) => {
-      setMovies(data.results);
-    });
-  }, []);
+    getPopularMedia(mediaType, 1)
+      .then((data) => setMovies(data.results || []))
+      .catch(() => setMovies([]));
+  }, [mediaType]);
 
   const [topRateds, setTopRateds] = useState([]);
   useEffect(() => {
-    getTopRatedMovies(1).then((data) => {
-      setTopRateds(data.results);
-    });
-  }, []);
+    getTopRatedMedia(mediaType, 1)
+      .then((data) => setTopRateds(data.results || []))
+      .catch(() => setTopRateds([]));
+  }, [mediaType]);
 
     const [upcomingMovies, setUpcomingMovies] = useState([]);
   useEffect(() => {
-    getUpcomingMovies(1).then((data) => {
-      setUpcomingMovies(data.results);
-    });
-  }, []);
+    getUpcomingMedia(mediaType, 1)
+      .then((data) => setUpcomingMovies(data.results || []))
+      .catch(() => setUpcomingMovies([]));
+  }, [mediaType]);
 
     const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
   useEffect(() => {
-    getNowPlayingMovies(1).then((data) => {
-      setNowPlayingMovies(data.results);
-    });
-  }, []);
+    getNowPlayingMedia(mediaType, 1)
+      .then((data) => setNowPlayingMovies(data.results || []))
+      .catch(() => setNowPlayingMovies([]));
+  }, [mediaType]);
 
     const [genres, setGenres] = useState([]);
   useEffect(() => {
-    getGenres().then((data) => {
-      setGenres(data);
-    });
-  }, []);
+    getGenresByMedia(mediaType)
+      .then((data) => setGenres(data))
+      .catch(() => setGenres([]));
+  }, [mediaType]);
 
       const [trendingMovies, setTrendingMovies] = useState([]);
   useEffect(() => {
-    getTrendingMovies(1).then((data) => {
-      setTrendingMovies(data.results);
-    });
-  }, []);
+    getTrendingMedia(mediaType, 1)
+      .then((data) => setTrendingMovies(data.results || []))
+      .catch(() => setTrendingMovies([]));
+  }, [mediaType]);
 
   const genreList = (() => {
     if (Array.isArray(genres)) {
@@ -92,8 +94,8 @@ function App() {
                           TV Show
                       </div>
                       <div
-                          className={"movie_type-2 " + (selectedType === "movies" ? "active" : "")}
-                          onClick={() => setSelectedType("movies")}
+                          className={"movie_type-2 " + (selectedType === "movie" ? "active" : "")}
+                          onClick={() => setSelectedType("movie")}
                       >
                           Movies
                       </div>
@@ -121,6 +123,10 @@ function App() {
           >
             {trendingMovies.map((movie) => (
               <SwiperSlide className="swiper-slide" key={movie.id}>
+                <div className="rating-badge">
+                  <span className="rating-value">{movie.vote_average?.toFixed(1)}</span>
+                  <i className="fa-solid fa-star rating-star" aria-hidden="true"></i>
+                </div>
                 <img
                   src={`https://image.tmdb.org/t/p/original${movie.backdrop_path || movie.poster_path || ""}`}
                   alt={movie.title} className="swiper-slide-image_banner"
@@ -187,9 +193,13 @@ function App() {
 
                 {movies.map((movie) => (
                   <SwiperSlide key={movie.id} className="swiper-slide">
-                    <Link to={`/movie/${movie.id}`} className="swiper-slide-link">
-                      <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
-                      <div className="swiper-slide-title">{movie.title}</div>
+                    <Link to={`/${mediaType}/${movie.id}`} className="swiper-slide-link">
+                      <div className="rating-badge">
+                        <span className="rating-value">{movie.vote_average?.toFixed(1)}</span>
+                        <i className="fa-solid fa-star rating-star" aria-hidden="true"></i>
+                      </div>
+                      <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title || movie.name} />
+                      <div className="swiper-slide-title">{movie.title || movie.name}</div>
                     </Link>
                   </SwiperSlide>
                 ))}
@@ -234,9 +244,13 @@ function App() {
 
                 {topRateds.map((movie) => (
                   <SwiperSlide key={movie.id} className="swiper-slide">
-                    <Link to={`/movie/${movie.id}`} className="swiper-slide-link">
-                      <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
-                      <div className="swiper-slide-title">{movie.title}</div>
+                    <Link to={`/${mediaType}/${movie.id}`} className="swiper-slide-link">
+                      <div className="rating-badge">
+                        <span className="rating-value">{movie.vote_average?.toFixed(1)}</span>
+                        <i className="fa-solid fa-star rating-star" aria-hidden="true"></i>
+                      </div>
+                      <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title || movie.name} />
+                      <div className="swiper-slide-title">{movie.title || movie.name}</div>
                     </Link>
                   </SwiperSlide>
                 ))}
@@ -281,9 +295,13 @@ function App() {
 
                 {upcomingMovies.map((movie) => (
                   <SwiperSlide key={movie.id} className="swiper-slide">
-                    <Link to={`/movie/${movie.id}`} className="swiper-slide-link">
-                      <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
-                      <div className="swiper-slide-title">{movie.title}</div>
+                    <Link to={`/${mediaType}/${movie.id}`} className="swiper-slide-link">
+                      <div className="rating-badge">
+                        <span className="rating-value">{movie.vote_average?.toFixed(1)}</span>
+                        <i className="fa-solid fa-star rating-star" aria-hidden="true"></i>
+                      </div>
+                      <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title || movie.name} />
+                      <div className="swiper-slide-title">{movie.title || movie.name}</div>
                     </Link>
                   </SwiperSlide>
                 ))}
