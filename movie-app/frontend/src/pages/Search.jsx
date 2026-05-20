@@ -1,24 +1,62 @@
 import { useState } from "react";
 import Sidebar from "../components/Sidebar";
 import { searchMovies } from "../services/movieService";
+import { Link } from "react-router-dom";
 import "../App.css";
+import "./css/Search.css";
 
 export default function Search() {
   const [selectedType, setSelectedType] = useState("tv");
   const [searchQuery, setSearchQuery] = useState("");
   const [results, setResults] = useState([]);
   const [hasSearched, setHasSearched] = useState(false);
+  const [searchFilter, setSearchFilter] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalResults, setTotalResults] = useState(0);
 
-  const handleSearch = async (e) => {
+  const handleSearch = async (e, page = 1) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
 
     setHasSearched(true);
+    setCurrentPage(page);
     try {
-      const data = await searchMovies(searchQuery);
+      const data = await searchMovies(searchQuery, searchFilter, page);
       setResults(data.results || []);
+      setTotalPages(data.total_pages || 1);
+      setTotalResults(data.total_results || 0);
     } catch {
       setResults([]);
+      setTotalPages(1);
+      setTotalResults(0);
+    }
+  };
+
+  const handleFilterClick = (filter) => {
+    setSearchFilter(filter);
+    setCurrentPage(1);
+    // Re-search with new filter if already searched
+    if (hasSearched && searchQuery.trim()) {
+      searchMovies(searchQuery, filter, 1)
+        .then((data) => {
+          setResults(data.results || []);
+          setTotalPages(data.total_pages || 1);
+          setTotalResults(data.total_results || 0);
+        })
+        .catch(() => {
+          setResults([]);
+          setTotalPages(1);
+          setTotalResults(0);
+        });
+    }
+  };
+
+  const handlePageChange = (page) => {
+    if (hasSearched && searchQuery.trim()) {
+      const event = { preventDefault: () => {} };
+      handleSearch(event, page);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
@@ -29,72 +67,177 @@ export default function Search() {
       </div>
 
       <div className="center_web">
-        <div className="movie_type-and-account">
-          <div className="movie_type gap-6">
-            <div
-              className={"movie_type-1 " + (selectedType === "tv" ? "active" : "")}
-              onClick={() => setSelectedType("tv")}
-            >
-              TV Show
-            </div>
-            <div
-              className={"movie_type-2 " + (selectedType === "movies" ? "active" : "")}
-              onClick={() => setSelectedType("movies")}
-            >
-              Movies
-            </div>
+        {!hasSearched && (
+          <div className="search-header">
+            <h1 className="search-title text-primary">Find Your Next Favorite</h1>
+            <p className="search-subtitle text-white">Search millions of movies, shows & people</p>
           </div>
-          <div className="center_web-account_name text-size">
-            <img src="~/Content/img/avt.jpg" alt="avatar" />
-            <p>Anonymous</p>
-          </div>
-        </div>
+        )}
 
-        <div className="search-content">
-          <h2 className="text-white">Search {selectedType === "tv" ? "TV Shows" : "Movies"}</h2>
-          <form onSubmit={handleSearch} className="search-form">
-            <input
-              type="text"
-              placeholder="Enter movie or show title..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="search-input"
-            />
-            <button type="submit" className="search-btn">
-              <i className="fa-solid fa-magnifying-glass"></i> Search
-            </button>
+        <div className={`search-form-container ${hasSearched ? "compact" : ""}`}>
+          <form onSubmit={(e) => handleSearch(e, 1)} className="search-form-large">
+            <div className="search-input-wrapper">
+              <i className="fa-solid fa-magnifying-glass search-icon"></i>
+              <input
+                type="text"
+                placeholder="Search movies, shows, people..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="search-input-large"
+              />
+              <button type="submit" className="search-btn-large">
+                Search
+              </button>
+            </div>
           </form>
-
-          {hasSearched && (
-            <div className="search-results">
-              {results.length > 0 ? (
-                <>
-                  <p className="text-white">Found {results.length} results</p>
-                  <div className="movies-grid">
-                    {results.map((movie) => (
-                      <div key={movie.id} className="movie-card">
-                        <img
-                          src={
-                            movie.poster_path
-                              ? `https://image.tmdb.org/t/p/w300${movie.poster_path}`
-                              : "https://via.placeholder.com/300x450?text=No+Image"
-                          }
-                          alt={movie.title || movie.name}
-                        />
-                        <div className="movie-card-info">
-                          <p className="text-white">{movie.title || movie.name}</p>
-                          <p className="text-primary">{movie.vote_average?.toFixed(1)}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              ) : (
-                <p className="text-white">No results found.</p>
-              )}
-            </div>
-          )}
         </div>
+
+        {hasSearched && (
+          <div className="search-results-container">
+            <div className="results-header">
+              <h2 className="text-white">
+                {results.length > 0
+                  ? `Found ${totalResults} results (Showing page ${currentPage} of ${totalPages})`
+                  : "No results found"}
+              </h2>
+            </div>
+
+            {results.length > 0 ? (
+              <>
+                <div className="search-results-grid">
+                  {results.map((item) => (
+                    <Link
+                      key={item.id}
+                      to={
+                        item.media_type === "person"
+                          ? `/person/${item.id}`
+                          : `/${item.media_type || "movie"}/${item.id}`
+                      }
+                      className="search-result-card"
+                    >
+                      <div className="result-image-wrapper">
+                        {item.media_type === "person" ? (
+                          <img
+                            src={
+                              item.profile_path
+                                ? `https://image.tmdb.org/t/p/w300${item.profile_path}`
+                                : "https://via.placeholder.com/300x450?text=No+Image"
+                            }
+                            alt={item.name}
+                            className="result-image"
+                          />
+                        ) : (
+                          <>
+                            <img
+                              src={
+                                item.poster_path
+                                  ? `https://image.tmdb.org/t/p/w300${item.poster_path}`
+                                  : "https://via.placeholder.com/300x450?text=No+Image"
+                              }
+                              alt={item.title || item.name}
+                              className="result-image"
+                            />
+                            {item.vote_average && (
+                              <div className="result-rating-badge">
+                                <span className="result-rating">{item.vote_average.toFixed(1)}</span>
+                                <i className="fa-solid fa-star"></i>
+                              </div>
+                            )}
+                          </>
+                        )}
+                      </div>
+                      <div className="result-info">
+                        <p className="result-title text-white">
+                          {item.title || item.name}
+                        </p>
+                        <p className="result-type text-primary">
+                          {item.media_type === "person"
+                            ? "Person"
+                            : item.media_type === "tv"
+                            ? "TV Show"
+                            : "Movie"}
+                        </p>
+                        {item.release_date && (
+                          <p className="result-date text-secondary">
+                            {new Date(item.release_date).getFullYear()}
+                          </p>
+                        )}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+
+                {totalPages > 1 && (
+                  <div className="pagination-container">
+                    <div className="pagination">
+                      <button
+                        className="pagination-btn"
+                        onClick={() => handlePageChange(1)}
+                        disabled={currentPage === 1}
+                      >
+                        First
+                      </button>
+
+                      <button
+                        className="pagination-btn"
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                      >
+                        <i className="fa-solid fa-chevron-left"></i>
+                      </button>
+
+                      {/* Page Numbers */}
+                      <div className="pagination-numbers">
+                        {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+                          let pageNum;
+                          if (totalPages <= 5) {
+                            pageNum = i + 1;
+                          } else if (currentPage <= 3) {
+                            pageNum = i + 1;
+                          } else if (currentPage >= totalPages - 2) {
+                            pageNum = totalPages - 4 + i;
+                          } else {
+                            pageNum = currentPage - 2 + i;
+                          }
+                          return (
+                            <button
+                              key={pageNum}
+                              className={`pagination-number ${currentPage === pageNum ? "active" : ""}`}
+                              onClick={() => handlePageChange(pageNum)}
+                            >
+                              {pageNum}
+                            </button>
+                          );
+                        })}
+                      </div>
+
+                      <button
+                        className="pagination-btn"
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                      >
+                        <i className="fa-solid fa-chevron-right"></i>
+                      </button>
+
+                      <button
+                        className="pagination-btn"
+                        onClick={() => handlePageChange(totalPages)}
+                        disabled={currentPage === totalPages}
+                      >
+                        Last
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="no-results">
+                <i className="fa-solid fa-face-frown"></i>
+                <p className="text-white">No results found. Try another search!</p>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="right_wed">
@@ -102,16 +245,44 @@ export default function Search() {
           <button className="rw-search-button">
             <i className="fa-solid fa-magnifying-glass"></i>
           </button>
-          <input className="rw-search-input" type="text" placeholder="Quick search..." />
+          <input
+            className="rw-search-input"
+            type="text"
+            placeholder="Quick search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyPress={(e) => e.key === "Enter" && handleSearch(e)}
+          />
         </div>
-        <div className="rw-search-sugestions">
-          <a href="#">Drama</a>
-          <a href="#">Comedy</a>
-          <a href="#">Talk</a>
-          <a href="#">Walk & Politics</a>
-          <a href="#">Family</a>
-          <a href="#">Kids</a>
-          <a href="#">Documentary</a>
+
+        <div className="rw-search-filters">
+          <div className="filter-title text-white font-medium">Search Results</div>
+          <div className="filter-options">
+            <button
+              className={`filter-option ${searchFilter === "all" ? "active" : ""}`}
+              onClick={() => handleFilterClick("all")}
+            >
+              All
+            </button>
+            <button
+              className={`filter-option ${searchFilter === "movie" ? "active" : ""}`}
+              onClick={() => handleFilterClick("movie")}
+            >
+              Movie
+            </button>
+            <button
+              className={`filter-option ${searchFilter === "tv" ? "active" : ""}`}
+              onClick={() => handleFilterClick("tv")}
+            >
+              TV Show
+            </button>
+            <button
+              className={`filter-option ${searchFilter === "person" ? "active" : ""}`}
+              onClick={() => handleFilterClick("person")}
+            >
+              People
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -9,8 +9,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Đăng ký MovieService + HttpClient
-builder.Services.AddHttpClient<MovieService>();
+// Đăng ký MovieService + HttpClient với decompression tự động
+builder.Services.AddHttpClient<MovieService>()
+    .ConfigureHttpClient(client => { })
+    .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+    {
+        AutomaticDecompression = System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.Deflate
+    });
 
 // Cho phép React gọi API (sẽ dùng sau)
 builder.Services.AddCors(options =>

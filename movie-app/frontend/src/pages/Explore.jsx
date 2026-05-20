@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import Sidebar from "../components/Sidebar";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { getGenresByMedia, getPopularMedia, getDiscoverMedia } from "../services/movieService";
+import { getGenresByMedia, getPopularMedia, getDiscoverMedia, getTrendingMedia } from "../services/movieService";
 import "./css/explore.css";
 export default function Explore() {
   const [selectedType, setSelectedType] = useState("tv");
@@ -34,6 +34,23 @@ export default function Explore() {
   };
 
   const applyDiscover = async (page = 1) => {
+    // Handle trending separately
+    if (sortBy === "trending") {
+      try {
+        const data = await getTrendingMedia(selectedType, page);
+        setMovies(data?.results || []);
+      } catch (e) {
+        setMovies([]);
+      }
+      // update URL
+      const outParams = new URLSearchParams();
+      outParams.set("sort", "trending");
+      outParams.set("page", String(page));
+      const newQs = outParams.toString();
+      navigate(`${location.pathname}${newQs ? `?${newQs}` : ""}`, { replace: true });
+      return;
+    }
+
     const options = {};
 
     if (selectedGenres.size > 0) options.with_genres = Array.from(selectedGenres).join(",");

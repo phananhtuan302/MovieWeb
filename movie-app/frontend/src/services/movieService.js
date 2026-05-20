@@ -111,11 +111,30 @@ export const getMediaByGenre = async(mediaType, genreIds, page = 1) => {
 // =========================
 // 7. SEARCH MOVIES
 // =========================
-export const searchMovies = async(query, page = 1) => {
-    const response = await axios.get(
-        `${API_BASE}/search?query=${query}&page=${page}`
-    );
-    return unwrapResponseData(response.data);
+export const searchMovies = async(query, filter = "all", page = 1) => {
+    let endpoint;
+
+    if (filter === "all") {
+        // Search all types using base endpoint
+        endpoint = `${API_BASE}/search?query=${encodeURIComponent(query)}&page=${page}`;
+    } else if (filter === "movie" || filter === "tv") {
+        // Search specific media type using media type endpoint
+        endpoint = `${API_BASE}/${filter}/search?query=${encodeURIComponent(query)}&page=${page}`;
+    } else if (filter === "person") {
+        // For person search, use base search and filter results client-side
+        endpoint = `${API_BASE}/search?query=${encodeURIComponent(query)}&page=${page}`;
+    }
+
+    const response = await axios.get(endpoint);
+    let data = unwrapResponseData(response.data);
+
+    // Filter results client-side if needed
+    if (filter === "person" && data.results) {
+        data.results = data.results.filter(item => item.media_type === "person");
+        data.total_results = data.results.length;
+    }
+
+    return data;
 };
 
 export const searchMedia = async(mediaType, query, page = 1) => {

@@ -323,40 +323,40 @@ function App() {
         <input className="rw-search-input" type="text" placeholder="Search..." />
     </div>
     <div className="rw-search-sugestions">
-        <a href="">Drama</a>
-        <a href="">Comedy</a>
-        <a href="">Talk</a>
-        <a href="">Walk & Politics</a>
-        <a href="">Family</a>
-        <a href="">Kids</a>
-        <a href="">Documentary</a>
+        {genreList.slice(0, 7).map((genre) => (
+          <Link 
+            key={genre.id} 
+            to={`/explore?genre=${genre.id}`}
+            className="genre-suggestion-link"
+          >
+            {genre.name}
+          </Link>
+        ))}
     </div>
     <div className="rw-trending">
         <div className="rw-trending-title">Trending</div>
         <i className="fa-solid fa-ellipsis-vertical"></i>
     </div>
-    <div className="rw-trending-list">
+    {trendingMovies.slice(0, 2).map((movie) => (
+      <div key={movie.id} className="rw-trending-list">
         <div className="trending-item">
-            <img className="img-trending-item" src="~/Content/img/trending1.jpg" />
-            <div className="introduce-trending-item">
-                <div className="title-trending-item">Bad Monkey</div>
-                <div className="day-trending-item">2024-08-13</div>
-                <div className="rates-trending-item">7.4<i className="fa-solid fa-star"></i></div>
-            </div>
+          <img 
+            className="img-trending-item" 
+            src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
+            alt={movie.title || movie.name}
+          />
+          <div className="introduce-trending-item">
+            <div className="title-trending-item">{movie.title || movie.name}</div>
+            <div className="day-trending-item">{movie.release_date || movie.first_air_date}</div>
+            <div className="rates-trending-item">{movie.vote_average?.toFixed(1)}<i className="fa-solid fa-star"></i></div>
+          </div>
         </div>
-    </div>
-    <div className="rw-trending-list">
-        <div className="trending-item">
-            <img className="img-trending-item" src="~/Content/img/trending1.jpg" />
-            <div className="introduce-trending-item">
-                <div className="title-trending-item">Bad Monkey</div>
-                <div className="day-trending-item">2024-08-13</div>
-                <div className="rates-trending-item">7.4<i className="fa-solid fa-star"></i></div>
-            </div>
-        </div>
-    </div>
+      </div>
+    ))}
     <div className="more-trending-list">
-        <button className="more-trending-list-button">See more</button>
+      <Link to="/explore" className="more-trending-list-button">
+        See more
+      </Link>
     </div>
         </div>
 </div>
