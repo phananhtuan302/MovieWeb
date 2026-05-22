@@ -1,6 +1,12 @@
 using backend.Services;
+using backend.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Đăng ký DbContext
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Đăng ký Controllers
 builder.Services.AddControllers();
@@ -29,6 +35,13 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+// Tự động migrate database khi startup
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate();
+}
 
 // Bật Swagger trong môi trường Development
 if (app.Environment.IsDevelopment())

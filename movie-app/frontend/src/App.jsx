@@ -3,7 +3,7 @@ import { getPopularMedia, getTopRatedMedia, getUpcomingMedia, getNowPlayingMedia
 import "./App.css";
 import "./pages/css/explore.css";
 import Sidebar from "./components/Sidebar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay, Pagination } from "swiper/modules";
@@ -13,8 +13,10 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 function App() {
+  const navigate = useNavigate();
   const [selectedType, setSelectedType] = useState("tv");
   const mediaType = selectedType === "tv" ? "tv" : "movie";
+  const [searchInput, setSearchInput] = useState("");
 
   const [movies, setMovies] = useState([]);
   useEffect(() => {
@@ -319,8 +321,25 @@ function App() {
         </div>
         <div className="right_wed">
     <div className="rw-search">
-        <button className="rw-search-button"><i className="fa-solid fa-magnifying-glass"></i></button>
-        <input className="rw-search-input" type="text" placeholder="Search..." />
+        <button className="rw-search-button" onClick={() => {
+          if (searchInput.trim()) {
+            navigate(`/search?q=${encodeURIComponent(searchInput)}`);
+          }
+        }}>
+          <i className="fa-solid fa-magnifying-glass"></i>
+        </button>
+        <input 
+          className="rw-search-input" 
+          type="text" 
+          placeholder="Search..." 
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+          onKeyPress={(e) => {
+            if (e.key === "Enter" && searchInput.trim()) {
+              navigate(`/search?q=${encodeURIComponent(searchInput)}`);
+            }
+          }}
+        />
     </div>
     <div className="rw-search-sugestions">
         {genreList.slice(0, 7).map((genre) => (

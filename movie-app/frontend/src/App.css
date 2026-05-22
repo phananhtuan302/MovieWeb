@@ -252,7 +252,7 @@
         cursor: pointer;
         position: relative;
         width: 75px;
-        j text-align: center;
+        text-align: center;
     }
     .movie_type-1:hover,
     .movie_type-2:hover {

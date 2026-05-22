@@ -1,12 +1,23 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export default function Sidebar({ selectedType, setSelectedType }) {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+
+  const handleProtectedLink = (e, path) => {
+    if (!isAuthenticated) {
+      e.preventDefault();
+      alert("Bạn phải đăng nhập để tiếp tục");
+      navigate("/login");
+    }
+  };
   return (
     <>
 
-      <div className="it_st-logo gap-6">
+      <div className="it_st-logo gap-6" style={{ cursor: "pointer" }} onClick={() => navigate("/")}>
         <i className="fa-regular fa-moon"></i>
         <div className=" it_st-logo-text">
           <span className="text-white font-medium text-size">MOON</span>
@@ -39,13 +50,21 @@ export default function Sidebar({ selectedType, setSelectedType }) {
       <div className="it_st_items it_st-personal gap-6">
         <div className="text-white font-medium text-size">PERSONAL</div>
         <div className="it_st-personal-bookmarked item_menu_start text-size font-medium">
-          <Link className={`flex gap-6 ${location.pathname.startsWith("/bookmarked") ? "web-now" : ""}`} to="/bookmarked">
+          <Link 
+            onClick={(e) => handleProtectedLink(e, "/bookmarked")}
+            className={`flex gap-6 ${location.pathname.startsWith("/bookmarked") ? "web-now" : ""}`} 
+            to="/bookmarked"
+          >
             <i className="fa-solid fa-bookmark"></i>
             Bookmarked
           </Link>
         </div>
         <div className="it_st-personal-history item_menu_start text-size font-medium">
-          <Link className={`flex gap-6 ${location.pathname.startsWith("/history") ? "web-now" : ""}`} to="/history">
+          <Link 
+            onClick={(e) => handleProtectedLink(e, "/history")}
+            className={`flex gap-6 ${location.pathname.startsWith("/history") ? "web-now" : ""}`} 
+            to="/history"
+          >
             <i className="fa-solid fa-clock"></i>
             History
           </Link>
@@ -55,7 +74,11 @@ export default function Sidebar({ selectedType, setSelectedType }) {
       <div className="it_st_items it_st-general gap-6">
         <div className="text-white font-medium text-size">GENERAL</div>
         <div className="it_st-personal-profile item_menu_start text-size font-medium">
-          <Link className={`flex gap-6 ${location.pathname.startsWith("/profile") ? "web-now" : ""}`} to="/profile">
+          <Link 
+            onClick={(e) => handleProtectedLink(e, "/profile")}
+            className={`flex gap-6 ${location.pathname.startsWith("/profile") ? "web-now" : ""}`} 
+            to="/profile"
+          >
             <i className="fa-solid fa-user"></i>
             Profile
           </Link>

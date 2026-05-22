@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import { searchMovies } from "../services/movieService";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import "../App.css";
 import "./css/Search.css";
 
 export default function Search() {
+  const [searchParams] = useSearchParams();
   const [selectedType, setSelectedType] = useState("tv");
   const [searchQuery, setSearchQuery] = useState("");
   const [results, setResults] = useState([]);
@@ -15,14 +16,22 @@ export default function Search() {
   const [totalPages, setTotalPages] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
 
-  const handleSearch = async (e, page = 1) => {
-    e.preventDefault();
-    if (!searchQuery.trim()) return;
+  // Perform search when URL query parameter changes
+  useEffect(() => {
+    const queryParam = searchParams.get("q");
+    if (queryParam) {
+      setSearchQuery(queryParam);
+      performSearch(queryParam, "all", 1);
+    }
+  }, [searchParams]);
+
+  const performSearch = async (query, filter, page) => {
+    if (!query.trim()) return;
 
     setHasSearched(true);
     setCurrentPage(page);
     try {
-      const data = await searchMovies(searchQuery, searchFilter, page);
+      const data = await searchMovies(query, filter, page);
       setResults(data.results || []);
       setTotalPages(data.total_pages || 1);
       setTotalResults(data.total_results || 0);
@@ -31,6 +40,11 @@ export default function Search() {
       setTotalPages(1);
       setTotalResults(0);
     }
+  };
+
+  const handleSearch = async (e, page = 1) => {
+    e.preventDefault();
+    performSearch(searchQuery, searchFilter, page);
   };
 
   const handleFilterClick = (filter) => {
@@ -241,19 +255,6 @@ export default function Search() {
       </div>
 
       <div className="right_wed">
-        <div className="rw-search">
-          <button className="rw-search-button">
-            <i className="fa-solid fa-magnifying-glass"></i>
-          </button>
-          <input
-            className="rw-search-input"
-            type="text"
-            placeholder="Quick search..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyPress={(e) => e.key === "Enter" && handleSearch(e)}
-          />
-        </div>
 
         <div className="rw-search-filters">
           <div className="filter-title text-white font-medium">Search Results</div>
